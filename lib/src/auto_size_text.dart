@@ -32,6 +32,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.groupScaleFactor = 1,
   })  : textSpan = null,
         super(key: key);
 
@@ -57,6 +58,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.groupScaleFactor = 1,
   })  : data = null,
         super(key: key);
 
@@ -215,6 +217,10 @@ class AutoSizeText extends StatefulWidget {
   /// ```
   final String? semanticsLabel;
 
+  /// This property scales the text size of this element in the group relative
+  /// to other elements
+  final double groupScaleFactor;
+
   @override
   _AutoSizeTextState createState() => _AutoSizeTextState();
 }
@@ -261,8 +267,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       Widget text;
 
       if (widget.group != null) {
-        widget.group!._updateFontSize(this, fontSize);
-        text = _buildText(widget.group!._fontSize, style, maxLines);
+        widget.group!._updateFontSize(this, fontSize / widget.groupScaleFactor);
+        text = _buildText(widget.group!._fontSize * widget.groupScaleFactor, style, maxLines);
       } else {
         text = _buildText(fontSize, style, maxLines);
       }
